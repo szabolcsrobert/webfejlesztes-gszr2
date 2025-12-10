@@ -1,0 +1,14 @@
+{% extends 'quizzes/base.html' %}
+{% block content %}
+<h1>Quizzes</h1>
+<a href="{% url 'quiz_create' %}">Create Quiz</a>
+<ul>
+{% for quiz in quizzes %}
+<li>{{ quiz.title }}
+    <a href="{% url 'quiz_take' quiz.id %}">Take Quiz</a>
+<a href="{% url 'quiz_update' quiz.id %}">Edit</a>
+<a href="{% url 'quiz_delete' quiz.id %}">Delete</a>
+</li>
+{% endfor %}
+</ul>
+{% endblock %}
