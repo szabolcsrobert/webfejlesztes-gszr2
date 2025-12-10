@@ -1,10 +1,88 @@
-{% extends 'quizzes/base.html' %}
-{% block content %}
-<h1>Quiz Results: {{ quiz.title }}</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ quiz.title }} Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .score {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .question-list {
+            margin-bottom: 30px;
+            padding: 10px;
+            border-bottom: 2px solid #ccc;
+        }
+        .question-item {
+            margin-bottom: 10px;
+        }
+        .question-result {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ quiz.title }} Results</h1>
+    <p class="score">Score: {{ correct }}/{{ total }} ({{ percentage }}%)</p>
 
-<p>Total Questions: {{ total }}</p>
-<p>Correct Answers: {{ correct }}</p>
-<h2>Your Score: {{ percentage }}%</h2>
+    <!-- All questions at the top -->
+    <div class="question-list">
+        <h2>Questions:</h2>
+        {% for question in quiz.questions.all %}
+            <div class="question-item">{{ forloop.counter }}. {{ question.text }}</div>
+        {% endfor %}
+    </div>
 
-<a href="/quizzes/">Back to Quizzes</a>
-{% endblock %}
+    <!-- User answers and correctness -->
+    {% for r in results %}
+        <div class="question-result">
+            <p><strong>Question:</strong> {{ r.question.text }}</p>
+            <p>
+                <strong>Your answer:</strong>
+                {% if r.selected %}
+                    {{ r.selected.text }}
+                {% else %}
+                    No answer
+                {% endif %}
+            </p>
+            <p>
+                <strong>Correct:</strong>
+                {% if r.correct %}
+                    <span class="correct">Yes</span>
+                {% else %}
+                    <span class="incorrect">No</span>
+                {% endif %}
+            </p>
+        </div>
+    {% endfor %}
+
+    <a href="{% url 'quizzes:quiz_list' %}" class="back-button">Back to Quiz List</a>
+</body>
+</html>

@@ -1,8 +1,39 @@
-{% extends 'quizzes/base.html' %}
-{% block content %}
-<h1>Delete Question?</h1>
-<form method="POST">{% csrf_token %}
-<p>Are you sure?</p>
-<button type="submit">Delete</button>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Question</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        p { margin-bottom: 20px; }
+        form button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .delete-button { background-color: #dc3545; color: white; }
+        .delete-button:hover { background-color: #b02a37; }
+        .cancel-button { background-color: #6c757d; color: white; }
+        .cancel-button:hover { background-color: #495057; }
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a.button:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Delete Question</h1>
+    <p>Are you sure you want to delete the question: <strong>{{ question.text }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="delete-button">Delete</button>
+        <a href="{% url 'quizzes:question_list' %}" class="cancel-button">Cancel</a>
+    </form>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head><title>Quiz App</title></head>
 <body>
 <nav>
-    <a href="/quizzes/">Quizzes</a> |
-    <a href="/questions/">Questions</a>
+    <a href="{% url 'quizzes:quiz_list' %}">Quizzes</a> |
+    <a href="{% url 'quizzes:question_list' %}">Questions</a>
 </nav>
 <hr>
 {% block content %}{% endblock %}

@@ -1,24 +1,48 @@
-{% extends 'quizzes/base.html' %}
-{% block content %}
-<h1>Take Quiz: {{ quiz.title }}</h1>
-
-<form method="POST" action="{% url 'quiz_submit' quiz.id %}">
-    {% csrf_token %}
-
-    {% for q in questions %}
-    <div style="margin-bottom: 20px;">
-        <strong>{{ forloop.counter }}. {{ q.text }}</strong><br>
-
-        {% for opt in q.options.all %}
-            <label>
-                <input type="radio" name="{{ q.id }}" value="{{ opt.id }}">
-                {{ opt.text }}
-            </label><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ quiz.title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .question { margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #ccc; }
+        label { display: block; margin-bottom: 5px; }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #0056b3; }
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a.button:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>{{ quiz.title }}</h1>
+    <form method="post" action="{% url 'quizzes:quiz_submit' quiz.pk %}">
+        {% csrf_token %}
+        {% for question in questions %}
+            <div class="question">
+                <p><strong>{{ forloop.counter }}. {{ question.text }}</strong></p>
+                {% for option in question.answeroption_set.all %}
+                    <label>
+                        <input type="radio" name="{{ question.id }}" value="{{ option.id }}">
+                        {{ option.text }}
+                    </label>
+                {% endfor %}
+            </div>
         {% endfor %}
-    </div>
-    {% endfor %}
-
-    <button type="submit">Submit Quiz</button>
-</form>
-
-{% endblock %}
+        <button type="submit">Submit Quiz</button>
+    </form>
+    <a href="{% url 'quizzes:quiz_list' %}" class="button">Back to Quiz List</a>
+</body>
+</html>

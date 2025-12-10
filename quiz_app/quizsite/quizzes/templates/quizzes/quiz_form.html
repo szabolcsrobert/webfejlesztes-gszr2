@@ -1,8 +1,42 @@
-{% extends 'quizzes/base.html' %}
-{% block content %}
-<h1>Quiz Form</h1>
-<form method="POST">{% csrf_token %}
-{{ form.as_p }}
-<button type="submit">Save</button>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if form.instance.pk %}Edit Quiz{% else %}Create Quiz{% endif %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        form { max-width: 400px; }
+        input[type="text"], button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 8px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #0056b3; }
+        a.button {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a.button:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Edit Quiz{% else %}Create Quiz{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if form.instance.pk %}Update{% else %}Create{% endif %}</button>
+    </form>
+    <a href="{% url 'quizzes:quiz_list' %}" class="button">Back to Quiz List</a>
+</body>
+</html>
